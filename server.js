@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 //Multer Konfigurasyonu
 const upload = multer({
   storage: storage,
-  limits:{fileSize: 419000000},
+  limits:{fileSize: 7549747200},
   fileFilter: function(req, file, cb){
     checkFileType(file, cb);
   }
@@ -48,21 +48,24 @@ app.post('/upload', (req, res) => {
         console.log("resim secilmedi")
       } else {
         console.log(req.file)
-        console.log(req.body)
+        //console.log(req.body)
         request.post('http://localhost:8000',{body:req.file.path},(err,response,body)=>{
-        console.log(err)
-	      //console.log(response)
-        //console.log(body)
+        //console.log(err)
+	      //console.log(toString( response))
+        //console.log(toString(body))
         body=body.replace(/'/g, '"');
-        //console.log(body)
+        console.log(body)
         bodyJsn=JSON.parse(body)
         bodyJsn["_id"]=req.body.imgId
         bodyJsn["_userId"]=req.body.userId
         
         console.log(bodyJsn)
         res.json(bodyJsn)  
+//        print("imgId="+req.query.imgId)
+//       bodyJsn["_id"]=req.query.imgId
+      
         bodyJsn["_id"]=null//TODO:Remove when you are done testing
-        MongoClient.connect(dbUrl, function(err, db) {
+       MongoClient.connect(dbUrl, function(err, db) {
           if (err) throw err;
           var dbo = db.db("galleryDb");
           var myobj = bodyJsn;
@@ -85,5 +88,4 @@ app.post('/upload', (req, res) => {
 const port = 3000;
 
 app.listen(port, () => console.log(`Server started on port ${port}`))
-
 
