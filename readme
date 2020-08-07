@@ -1,5 +1,1 @@
-mongodb yi çalıştırmak için
-sudo service mongod start
 
-sunucuu çalıştırmak için
-npm start
